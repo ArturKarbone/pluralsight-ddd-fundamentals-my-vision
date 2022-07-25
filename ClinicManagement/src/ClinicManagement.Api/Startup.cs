@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using Autofac;
 using BlazorShared;
-using ClinicManagement.Api.Hubs;
 using ClinicManagement.Core.Clients.Domain;
-using ClinicManagement.Core.Clients.Use_Cases.Create;
-using ClinicManagement.Core.Clients.Use_Cases.Delete;
-using ClinicManagement.Core.Clients.Use_Cases.List;
-using ClinicManagement.Core.Clients.Use_Cases.GetById;
-using ClinicManagement.Core.Clients.Use_Cases.Update;
+using clients = ClinicManagement.Core.Clients.Use_Cases;
+using patients = ClinicManagement.Core.Patients.Use_Cases;
 using ClinicManagement.Core.Interfaces;
 using ClinicManagement.Infrastructure;
 using ClinicManagement.Infrastructure.Data;
@@ -120,12 +115,17 @@ namespace ClinicManagement.Api
       services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
       services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
 
-      services.AddScoped<ICreate, Create>();
-      services.AddScoped<IDelete, Delete>();
-      services.AddScoped<IGetById, GetById>();
-      services.AddScoped<IList, List>();
-      services.AddScoped<IUpdate, Update>();
+      services.AddScoped<clients.Create.ICreate, clients.Create.Create>();
+      services.AddScoped<clients.Delete.IDelete, clients.Delete.Delete>();
+      services.AddScoped<clients.GetById.IGetById, clients.GetById.GetById>();
+      services.AddScoped<clients.List.IList, clients.List.List>();
+      services.AddScoped<clients.Update.IUpdate, clients.Update.Update>();
 
+      services.AddScoped<patients.Create.ICreate, patients.Create.Create>();
+      services.AddScoped<patients.Delete.IDelete, patients.Delete.Delete>();
+      services.AddScoped<patients.GetById.IGetById, patients.GetById.GetById>();
+      services.AddScoped<patients.List.IList, patients.List.List>();
+      services.AddScoped<patients.Update.IUpdate, patients.Update.Update>();
     }
 
     public void ConfigureContainer(ContainerBuilder builder)

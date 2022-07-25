@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
 using BlazorShared.Models.Patient;
-using ClinicManagement.Core.Clients.Domain;
-using ClinicManagement.Core.Clients.Specifications;
-using ClinicManagement.Core.Specifications;
+using ClinicManagement.Core.Patients.Use_Cases.List;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.PatientEndpoints
@@ -17,14 +12,11 @@ namespace ClinicManagement.Api.PatientEndpoints
     .WithRequest<ListPatientRequest>
     .WithResponse<ListPatientResponse>
   {
-    private readonly IRepository<Client> _repository;
-    private readonly IMapper _mapper;
+    private readonly IList listUseCase;
 
-    public List(IRepository<Client> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public List(IList listUseCase) =>
+      this.listUseCase = listUseCase;
+
 
     [HttpGet("api/patients")]
     [SwaggerOperation(
@@ -35,16 +27,13 @@ namespace ClinicManagement.Api.PatientEndpoints
     ]
     public override async Task<ActionResult<ListPatientResponse>> HandleAsync([FromQuery] ListPatientRequest request, CancellationToken cancellationToken)
     {
-      var response = new ListPatientResponse(request.CorrelationId);
+      var response = await listUseCase.HandleAsync(request, cancellationToken);
 
-      var spec = new ClientByIdIncludePatientsSpec(request.ClientId);
-      var client = await _repository.GetBySpecAsync(spec);
-      if (client == null) return NotFound();
-
-      response.Patients = _mapper.Map<List<PatientDto>>(client.Patients);
-      response.Count = response.Patients.Count;
-
-      return Ok(response);
+      return response switch
+      {
+        null => NotFound(),
+        _ => Ok(response)
+      };
     }
   }
 }

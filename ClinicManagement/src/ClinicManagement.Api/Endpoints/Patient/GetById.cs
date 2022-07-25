@@ -1,14 +1,10 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
 using AutoMapper;
 using BlazorShared.Models.Patient;
-using ClinicManagement.Core.Clients.Domain;
-using ClinicManagement.Core.Clients.Specifications;
-using ClinicManagement.Core.Specifications;
+using ClinicManagement.Core.Patients.Use_Cases.GetById;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.PatientEndpoints
@@ -17,14 +13,11 @@ namespace ClinicManagement.Api.PatientEndpoints
     .WithRequest<GetByIdPatientRequest>
     .WithResponse<GetByIdPatientResponse>
   {
-    private readonly IRepository<Client> _repository;
+    private readonly IGetById getByIdUseCase;
     private readonly IMapper _mapper;
 
-    public GetById(IRepository<Client> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public GetById(IGetById getByIdUseCase) =>
+      this.getByIdUseCase = getByIdUseCase;
 
     [HttpGet("api/patients/{PatientId}")]
     [SwaggerOperation(
@@ -33,21 +26,16 @@ namespace ClinicManagement.Api.PatientEndpoints
         OperationId = "patients.GetById",
         Tags = new[] { "PatientEndpoints" })
     ]
-    public override async Task<ActionResult<GetByIdPatientResponse>> HandleAsync([FromRoute] GetByIdPatientRequest request, 
+    public override async Task<ActionResult<GetByIdPatientResponse>> HandleAsync([FromRoute] GetByIdPatientRequest request,
       CancellationToken cancellationToken)
     {
-      var response = new GetByIdPatientResponse(request.CorrelationId);
+      var response = await getByIdUseCase.HandleAsync(request, cancellationToken);
 
-      var spec = new ClientByIdIncludePatientsSpec(request.ClientId);
-      var client = await _repository.GetBySpecAsync(spec);
-      if (client == null) return NotFound();
-
-      var patient = client.Patients.FirstOrDefault(p => p.Id == request.PatientId);
-      if (patient == null) return NotFound();
-
-      response.Patient = _mapper.Map<PatientDto>(patient);
-
-      return Ok(response);
+      return response switch
+      {
+        null => NotFound(),
+        _ => Ok(response)
+      };
     }
   }
 }

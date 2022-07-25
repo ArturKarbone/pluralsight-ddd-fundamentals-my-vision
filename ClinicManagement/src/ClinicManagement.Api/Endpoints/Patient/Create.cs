@@ -1,13 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
 using BlazorShared.Models.Patient;
-using ClinicManagement.Core.Clients.Domain;
-using ClinicManagement.Core.Clients.Specifications;
-using ClinicManagement.Core.Patiens.Domain;
+using ClinicManagement.Core.Patients.Use_Cases.Create;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.PatientEndpoints
@@ -16,13 +12,11 @@ namespace ClinicManagement.Api.PatientEndpoints
     .WithRequest<CreatePatientRequest>
     .WithResponse<CreatePatientResponse>
   {
-    private readonly IRepository<Client> _repository;
-    private readonly IMapper _mapper;
+    private readonly ICreate createUseCase;
 
-    public Create(IRepository<Client> repository, IMapper mapper)
+    public Create(ICreate createUseCase)
     {
-      _repository = repository;
-      _mapper = mapper;
+      this.createUseCase = createUseCase;
     }
 
     [HttpPost("api/patients")]
@@ -34,27 +28,14 @@ namespace ClinicManagement.Api.PatientEndpoints
     ]
     public override async Task<ActionResult<CreatePatientResponse>> HandleAsync(CreatePatientRequest request, CancellationToken cancellationToken)
     {
-      var response = new CreatePatientResponse(request.CorrelationId);
 
-      var spec = new ClientByIdIncludePatientsSpec(request.ClientId);
-      var client = await _repository.GetBySpecAsync(spec);
-      if (client == null) return NotFound();
+      var response = await createUseCase.HandleAsync(request, cancellationToken);
 
-      // right now we only add huskies
-      var newPatient = new Patient
+      return response switch
       {
-        ClientId = client.Id,
-        Name = request.PatientName,
-        AnimalType = new AnimalType("Dog", "Husky")
+        null => NotFound(),
+        _ => Ok(response)
       };
-      client.Patients.Add(newPatient);
-
-      await _repository.UpdateAsync(client);
-
-      var dto = _mapper.Map<PatientDto>(newPatient);
-      response.Patient = dto;
-
-      return Ok(response);
     }
   }
 }
