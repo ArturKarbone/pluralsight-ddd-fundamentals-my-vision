@@ -1,11 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Room;
-using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.Use_Cases.Create;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.RoomEndpoints
@@ -14,14 +11,11 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithRequest<CreateRoomRequest>
     .WithResponse<CreateRoomResponse>
   {
-    private readonly IRepository<Room> _repository;
-    private readonly IMapper _mapper;
+    private readonly ICreate createUseCase;
 
-    public Create(IRepository<Room> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public Create(ICreate createUseCase) =>
+      this.createUseCase = createUseCase;
+
 
     [HttpPost("api/rooms")]
     [SwaggerOperation(
@@ -32,13 +26,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<CreateRoomResponse>> HandleAsync(CreateRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = new CreateRoomResponse(request.CorrelationId);
-
-      var toAdd = _mapper.Map<Room>(request);
-      toAdd = await _repository.AddAsync(toAdd);
-
-      var dto = _mapper.Map<RoomDto>(toAdd);
-      response.Room = dto;
+      var response = await createUseCase.HandleAsync(request, cancellationToken);
 
       return Ok(response);
     }

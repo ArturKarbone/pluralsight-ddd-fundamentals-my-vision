@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using BlazorShared.Models.Room;
 using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.DTOs;
+using ClinicManagement.Core.Rooms.Use_Cases.Create;
+using ClinicManagement.Core.Rooms.Use_Cases.Delete;
+using ClinicManagement.Core.Rooms.Use_Cases.Update;
 
 namespace ClinicManagement.Api.MappingProfiles
 {

@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Room;
-using ClinicManagement.Core.Rooms.Domain;
-using ClinicManagement.Core.Specifications;
+using ClinicManagement.Core.Rooms.Use_Cases.List;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.RoomEndpoints
@@ -16,15 +11,11 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithRequest<ListRoomRequest>
     .WithResponse<ListRoomResponse>
   {
-    private readonly IRepository<Room> _repository;
-    private readonly IMapper _mapper;
+    private readonly IList useCase;
+ 
+    public List(IList useCase) =>
+      this.useCase = useCase;
 
-    public List(IRepository<Room> repository,
-      IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
 
     [HttpGet("api/rooms")]
     [SwaggerOperation(
@@ -35,16 +26,13 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<ListRoomResponse>> HandleAsync([FromQuery] ListRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = new ListRoomResponse(request.CorrelationId);
+      var response = useCase.HandleAsync(request, cancellationToken);
 
-      var roomSpec = new RoomSpecification();
-      var rooms = await _repository.ListAsync(roomSpec);
-      if (rooms is null) return NotFound();
-
-      response.Rooms = _mapper.Map<List<RoomDto>>(rooms);
-      response.Count = response.Rooms.Count;
-
-      return Ok(response);
+      return response switch
+      {
+        null => NotFound(),
+        _ => Ok(response)
+      };
     }
   }
 }

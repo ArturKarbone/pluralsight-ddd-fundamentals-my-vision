@@ -5,6 +5,7 @@ using BlazorShared;
 using ClinicManagement.Core.Clients.Domain;
 using clients = ClinicManagement.Core.Clients.Use_Cases;
 using patients = ClinicManagement.Core.Patients.Use_Cases;
+using rooms = ClinicManagement.Core.Rooms.Use_Cases;
 using ClinicManagement.Core.Interfaces;
 using ClinicManagement.Infrastructure;
 using ClinicManagement.Infrastructure.Data;
@@ -126,6 +127,12 @@ namespace ClinicManagement.Api
       services.AddScoped<patients.GetById.IGetById, patients.GetById.GetById>();
       services.AddScoped<patients.List.IList, patients.List.List>();
       services.AddScoped<patients.Update.IUpdate, patients.Update.Update>();
+
+      services.AddScoped<rooms.Create.ICreate, rooms.Create.Create>();
+      services.AddScoped<rooms.Delete.IDelete, rooms.Delete.Delete>();
+      services.AddScoped<rooms.GetById.IGetById, rooms.GetById.GetById>();
+      services.AddScoped<rooms.List.IList, rooms.List.List>();
+      services.AddScoped<rooms.Update.IUpdate, rooms.Update.Update>();
     }
 
     public void ConfigureContainer(ContainerBuilder builder)

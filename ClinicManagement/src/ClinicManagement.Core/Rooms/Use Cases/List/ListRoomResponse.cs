@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using BlazorShared.Models;
+using ClinicManagement.Core.Rooms.DTOs;
 
-namespace BlazorShared.Models.Room
+namespace ClinicManagement.Core.Rooms.Use_Cases.List
 {
   public class ListRoomResponse : BaseResponse
   {

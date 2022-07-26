@@ -1,11 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Room;
-using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.Use_Cases.GetById;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.RoomEndpoints
@@ -14,14 +11,12 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithRequest<GetByIdRoomRequest>
     .WithResponse<GetByIdRoomResponse>
   {
-    private readonly IRepository<Room> _repository;
-    private readonly IMapper _mapper;
+    private readonly IGetById useCase;
 
-    public GetById(IRepository<Room> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+
+    public GetById(IGetById useCase) =>
+      this.useCase = useCase;
+
 
     [HttpGet("api/rooms/{RoomId}")]
     [SwaggerOperation(
@@ -32,16 +27,13 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<GetByIdRoomResponse>> HandleAsync([FromRoute] GetByIdRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = new GetByIdRoomResponse(request.CorrelationId);
+      var response = useCase.HandleAsync(request, cancellationToken);
 
-      var room = await _repository.GetByIdAsync(request.RoomId);
-      if (room is null) return NotFound();
-
-      response.Room = _mapper.Map<RoomDto>(room);
-
-      return Ok(response);
+      return response switch
+      {
+        null => NotFound(),
+        _ => Ok(response)
+      };
     }
   }
-
-
 }

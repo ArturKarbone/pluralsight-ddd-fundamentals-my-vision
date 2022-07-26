@@ -1,4 +1,6 @@
-﻿namespace BlazorShared.Models.Room
+﻿using BlazorShared.Models;
+
+namespace ClinicManagement.Core.Rooms.Use_Cases.Delete
 {
   public class DeleteRoomRequest : BaseRequest
   {

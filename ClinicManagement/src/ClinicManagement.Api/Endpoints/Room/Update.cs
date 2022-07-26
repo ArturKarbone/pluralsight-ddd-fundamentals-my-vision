@@ -1,11 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Room;
-using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.Use_Cases.Update;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.RoomEndpoints
@@ -14,14 +11,11 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithRequest<UpdateRoomRequest>
     .WithResponse<UpdateRoomResponse>
   {
-    private readonly IRepository<Room> _repository;
-    private readonly IMapper _mapper;
+    private readonly IUpdate useCase;
 
-    public Update(IRepository<Room> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public Update(IUpdate useCase) =>
+      this.useCase = useCase;
+
 
     [HttpPut("api/rooms")]
     [SwaggerOperation(
@@ -32,13 +26,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<UpdateRoomResponse>> HandleAsync(UpdateRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = new UpdateRoomResponse(request.CorrelationId);
-
-      var toUpdate = _mapper.Map<Room>(request);
-      await _repository.UpdateAsync(toUpdate);
-
-      var dto = _mapper.Map<RoomDto>(toUpdate);
-      response.Room = dto;
+      var response = useCase.HandleAsync(request, cancellationToken);
 
       return Ok(response);
     }

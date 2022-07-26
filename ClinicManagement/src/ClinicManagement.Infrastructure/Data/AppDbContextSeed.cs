@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorShared.Models.AppointmentType;
-using BlazorShared.Models.Room;
 using ClinicManagement.Core.Appointments;
 using ClinicManagement.Core.Clients.Domain;
 using ClinicManagement.Core.Doctors.Domain;
 using ClinicManagement.Core.Patiens.Domain;
 using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

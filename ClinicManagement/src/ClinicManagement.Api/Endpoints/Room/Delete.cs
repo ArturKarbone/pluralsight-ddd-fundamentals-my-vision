@@ -1,11 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Room;
-using ClinicManagement.Core.Rooms.Domain;
+using ClinicManagement.Core.Rooms.Use_Cases.Delete;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.RoomEndpoints
@@ -14,14 +11,10 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithRequest<DeleteRoomRequest>
     .WithResponse<DeleteRoomResponse>
   {
-    private readonly IRepository<Room> _repository;
-    private readonly IMapper _mapper;
+    private readonly IDelete useCase;
 
-    public Delete(IRepository<Room> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public Delete(IDelete useCase) =>
+      this.useCase = useCase;
 
     [HttpDelete("api/rooms/{id}")]
     [SwaggerOperation(
@@ -32,11 +25,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<DeleteRoomResponse>> HandleAsync([FromRoute] DeleteRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = new DeleteRoomResponse(request.CorrelationId);
-
-      var toDelete = _mapper.Map<Room>(request);
-      await _repository.DeleteAsync(toDelete);
-
+      var response = await useCase.HandleAsync(request, cancellationToken);
       return Ok(response);
     }
   }

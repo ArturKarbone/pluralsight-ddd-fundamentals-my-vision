@@ -1,6 +1,8 @@
 ﻿using System;
+using BlazorShared.Models;
+using ClinicManagement.Core.Rooms.DTOs;
 
-namespace BlazorShared.Models.Room
+namespace ClinicManagement.Core.Rooms.Use_Cases.Create
 {
   public class CreateRoomResponse : BaseResponse
   {

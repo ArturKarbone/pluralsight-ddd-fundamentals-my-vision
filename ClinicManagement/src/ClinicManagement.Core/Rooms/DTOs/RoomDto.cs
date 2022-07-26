@@ -1,4 +1,4 @@
-﻿namespace BlazorShared.Models.Room
+﻿namespace ClinicManagement.Core.Rooms.DTOs
 {
   public class RoomDto
   {

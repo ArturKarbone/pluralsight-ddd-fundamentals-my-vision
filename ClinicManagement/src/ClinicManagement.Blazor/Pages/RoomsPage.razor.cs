@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorShared.Models.Room;
 using ClinicManagement.Blazor.Services;
+using ClinicManagement.Core.Rooms.DTOs;
+using ClinicManagement.Core.Rooms.Use_Cases.Create;
+using ClinicManagement.Core.Rooms.Use_Cases.Update;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorShared.Models.Room;
+using ClinicManagement.Core.Rooms.DTOs;
+using ClinicManagement.Core.Rooms.Use_Cases.Create;
+using ClinicManagement.Core.Rooms.Use_Cases.Delete;
+using ClinicManagement.Core.Rooms.Use_Cases.GetById;
+using ClinicManagement.Core.Rooms.Use_Cases.List;
+using ClinicManagement.Core.Rooms.Use_Cases.Update;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicManagement.Blazor.Services

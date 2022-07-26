@@ -1,6 +1,7 @@
 ﻿using System;
+using BlazorShared.Models;
 
-namespace BlazorShared.Models.Room
+namespace ClinicManagement.Core.Rooms.Use_Cases.Delete
 {
   public class DeleteRoomResponse : BaseResponse
   {
