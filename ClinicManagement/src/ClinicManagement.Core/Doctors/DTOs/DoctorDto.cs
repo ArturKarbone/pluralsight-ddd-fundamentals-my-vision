@@ -1,4 +1,4 @@
-﻿namespace BlazorShared.Models.Doctor
+﻿namespace ClinicManagement.Core.Doctors.DTOs
 {
   public class DoctorDto
   {

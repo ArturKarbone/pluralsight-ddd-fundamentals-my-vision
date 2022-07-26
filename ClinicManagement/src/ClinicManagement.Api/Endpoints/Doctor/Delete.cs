@@ -1,11 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Doctor;
-using ClinicManagement.Core.Doctors.Domain;
+using ClinicManagement.Core.Doctors.Use_Cases.Delete;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.DoctorEndpoints
@@ -14,14 +11,12 @@ namespace ClinicManagement.Api.DoctorEndpoints
     .WithRequest<DeleteDoctorRequest>
     .WithResponse<DeleteDoctorResponse>
   {
-    private readonly IRepository<Doctor> _repository;
-    private readonly IMapper _mapper;
+    private readonly IDelete useCase;
 
-    public Delete(IRepository<Doctor> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+
+    public Delete(IDelete useCase) =>
+      this.useCase = useCase;
+
 
     [HttpDelete("api/doctors/{id}")]
     [SwaggerOperation(
@@ -32,11 +27,7 @@ namespace ClinicManagement.Api.DoctorEndpoints
     ]
     public override async Task<ActionResult<DeleteDoctorResponse>> HandleAsync([FromRoute] DeleteDoctorRequest request, CancellationToken cancellationToken)
     {
-      var response = new DeleteDoctorResponse(request.CorrelationId);
-
-      var toDelete = _mapper.Map<Doctor>(request);
-      await _repository.DeleteAsync(toDelete);
-
+      var response = await useCase.HandleAsync(request, cancellationToken);
       return Ok(response);
     }
   }

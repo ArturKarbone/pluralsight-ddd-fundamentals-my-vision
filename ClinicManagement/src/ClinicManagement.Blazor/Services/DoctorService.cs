@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorShared.Models.Doctor;
+using ClinicManagement.Core.Doctors.DTOs;
+using ClinicManagement.Core.Doctors.Use_Cases.Create;
+using ClinicManagement.Core.Doctors.Use_Cases.Delete;
+using ClinicManagement.Core.Doctors.Use_Cases.GetById;
+using ClinicManagement.Core.Doctors.Use_Cases.List;
+using ClinicManagement.Core.Doctors.Use_Cases.Update;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicManagement.Blazor.Services

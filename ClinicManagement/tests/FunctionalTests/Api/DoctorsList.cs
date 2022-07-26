@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ardalis.HttpClientTestExtensions;
-using BlazorShared.Models.Doctor;
 using ClinicManagement.Api;
+using ClinicManagement.Core.Doctors.Use_Cases.List;
 using Xunit;
 using Xunit.Abstractions;
 

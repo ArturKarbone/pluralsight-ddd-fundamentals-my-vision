@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
-using BlazorShared.Models.Doctor;
 using ClinicManagement.Api.ApplicationEvents;
 using ClinicManagement.Core.Doctors.Domain;
+using ClinicManagement.Core.Doctors.DTOs;
+using ClinicManagement.Core.Doctors.Use_Cases.Create;
+using ClinicManagement.Core.Doctors.Use_Cases.Delete;
+using ClinicManagement.Core.Doctors.Use_Cases.Update;
 
 namespace ClinicManagement.Api.MappingProfiles
 {

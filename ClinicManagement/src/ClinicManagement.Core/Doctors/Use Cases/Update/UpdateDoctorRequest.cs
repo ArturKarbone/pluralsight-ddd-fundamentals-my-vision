@@ -1,4 +1,6 @@
-﻿namespace BlazorShared.Models.Doctor
+﻿using BlazorShared.Models;
+
+namespace ClinicManagement.Core.Doctors.Use_Cases.Update
 {
   public class UpdateDoctorRequest : BaseRequest
   {

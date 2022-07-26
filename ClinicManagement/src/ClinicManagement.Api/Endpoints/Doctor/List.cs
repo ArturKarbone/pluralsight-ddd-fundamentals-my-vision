@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.Doctor;
-using ClinicManagement.Core.Doctors.Domain;
+using ClinicManagement.Core.Doctors.Use_Cases.List;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.DoctorEndpoints
@@ -15,14 +11,10 @@ namespace ClinicManagement.Api.DoctorEndpoints
     .WithRequest<ListDoctorRequest>
     .WithResponse<ListDoctorResponse>
   {
-    private readonly IRepository<Doctor> _repository;
-    private readonly IMapper _mapper;
+    private readonly IList useCase;
 
-    public List(IRepository<Doctor> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public List(IList useCase) =>
+      this.useCase = useCase;
 
     [HttpGet("api/doctors")]
     [SwaggerOperation(
@@ -33,15 +25,12 @@ namespace ClinicManagement.Api.DoctorEndpoints
     ]
     public override async Task<ActionResult<ListDoctorResponse>> HandleAsync([FromQuery] ListDoctorRequest request, CancellationToken cancellationToken)
     {
-      var response = new ListDoctorResponse(request.CorrelationId);
-
-      var doctors = await _repository.ListAsync();
-      if (doctors is null) return NotFound();
-
-      response.Doctors = _mapper.Map<List<DoctorDto>>(doctors);
-      response.Count = response.Doctors.Count;
-
-      return Ok(response);
+      var response = await useCase.HandleAsync(request, cancellationToken);
+      return response switch
+      {
+        null => NotFound(),
+        _ => Ok(response)
+      };
     }
   }
 }

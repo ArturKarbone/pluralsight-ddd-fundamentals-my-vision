@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ClinicManagement.BlazorShared\ClinicManagement.BlazorShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\DTOs\" />
+  </ItemGroup>
+
 </Project>

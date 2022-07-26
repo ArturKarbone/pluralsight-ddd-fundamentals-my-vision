@@ -1,6 +1,8 @@
 ﻿using System;
+using BlazorShared.Models;
+using ClinicManagement.Core.Doctors.DTOs;
 
-namespace BlazorShared.Models.Doctor
+namespace ClinicManagement.Core.Doctors.Use_Cases.GetById
 {
   public class GetByIdDoctorResponse : BaseResponse
   {

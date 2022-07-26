@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorShared.Models.Doctor;
 using ClinicManagement.Blazor.Services;
+using ClinicManagement.Core.Doctors.DTOs;
+using ClinicManagement.Core.Doctors.Use_Cases.Create;
+using ClinicManagement.Core.Doctors.Use_Cases.Update;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

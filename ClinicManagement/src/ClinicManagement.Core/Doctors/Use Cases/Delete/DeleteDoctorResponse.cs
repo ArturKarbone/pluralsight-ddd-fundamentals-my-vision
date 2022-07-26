@@ -1,6 +1,7 @@
 ﻿using System;
+using BlazorShared.Models;
 
-namespace BlazorShared.Models.Doctor
+namespace ClinicManagement.Core.Doctors.Use_Cases.Delete
 {
   public class DeleteDoctorResponse : BaseResponse
   {
