@@ -1,8 +1,8 @@
 ﻿using PluralsightDdd.SharedKernel;
 using PluralsightDdd.SharedKernel.Interfaces;
 
-namespace ClinicManagement.Core.Appointments
-{
+namespace ClinicManagement.Core.Appointment_Types.Domain
+{ 
   public class AppointmentType : BaseEntity<int>, IAggregateRoot
   {
     public string Name { get; private set; }

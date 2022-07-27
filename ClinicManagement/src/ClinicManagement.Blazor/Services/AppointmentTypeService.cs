@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorShared.Models.AppointmentType;
+using ClinicManagement.Core.Appointment_Types.DTOs;
+using ClinicManagement.Core.Appointment_Types.Use_Cases.List;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicManagement.Blazor.Services

@@ -1,4 +1,4 @@
-﻿using ClinicManagement.Core.Appointments;
+﻿using ClinicManagement.Core.Appointment_Types.Domain;
 
 namespace UnitTests.Builders
 {

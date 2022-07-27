@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ClinicManagement.Core.Appointments;
+using ClinicManagement.Core.Appointment_Types.Domain;
 using ClinicManagement.Infrastructure.Data;
 using UnitTests.Builders;
 using Xunit;

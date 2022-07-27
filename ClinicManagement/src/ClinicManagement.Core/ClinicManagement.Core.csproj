@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Appointments\" />
     <Folder Include="Shared\DTOs\" />
   </ItemGroup>
 

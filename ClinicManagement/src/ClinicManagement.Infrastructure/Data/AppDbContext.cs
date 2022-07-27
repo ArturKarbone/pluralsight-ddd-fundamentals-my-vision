@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ClinicManagement.Core.Appointments;
+using ClinicManagement.Core.Appointment_Types.Domain;
 using ClinicManagement.Core.Clients.Domain;
 using ClinicManagement.Core.Doctors.Domain;
 using ClinicManagement.Core.Patiens.Domain;

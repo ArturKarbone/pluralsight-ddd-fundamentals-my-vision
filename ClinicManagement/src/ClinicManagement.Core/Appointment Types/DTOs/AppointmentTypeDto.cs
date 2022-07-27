@@ -1,4 +1,4 @@
-﻿namespace BlazorShared.Models.AppointmentType
+﻿namespace ClinicManagement.Core.Appointment_Types.DTOs 
 {
   public class AppointmentTypeDto
   {

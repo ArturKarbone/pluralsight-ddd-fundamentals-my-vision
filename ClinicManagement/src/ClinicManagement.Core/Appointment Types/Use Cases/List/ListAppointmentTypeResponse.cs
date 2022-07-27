@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using BlazorShared.Models;
+using ClinicManagement.Core.Appointment_Types.DTOs;
 
-namespace BlazorShared.Models.AppointmentType
+namespace ClinicManagement.Core.Appointment_Types.Use_Cases.List
 {
   public class ListAppointmentTypeResponse : BaseResponse
   {

@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
-using AutoMapper;
-using BlazorShared.Models.AppointmentType;
-using ClinicManagement.Core.Appointments;
+using ClinicManagement.Core.Appointment_Types.Use_Cases.List;
 using Microsoft.AspNetCore.Mvc;
-using PluralsightDdd.SharedKernel.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ClinicManagement.Api.AppointmentTypeEndpoints
@@ -15,14 +11,10 @@ namespace ClinicManagement.Api.AppointmentTypeEndpoints
     .WithRequest<ListAppointmentTypeRequest>
     .WithResponse<ListAppointmentTypeResponse>
   {
-    private readonly IRepository<AppointmentType> _repository;
-    private readonly IMapper _mapper;
+    private readonly IList useCase;
 
-    public List(IRepository<AppointmentType> repository, IMapper mapper)
-    {
-      _repository = repository;
-      _mapper = mapper;
-    }
+    public List(IList useCase) =>
+      this.useCase = useCase;
 
     [HttpGet("api/appointment-types")]
     [SwaggerOperation(
@@ -33,11 +25,7 @@ namespace ClinicManagement.Api.AppointmentTypeEndpoints
     ]
     public override async Task<ActionResult<ListAppointmentTypeResponse>> HandleAsync([FromQuery] ListAppointmentTypeRequest request, CancellationToken cancellationToken)
     {
-      var response = new ListAppointmentTypeResponse(request.CorrelationId);
-
-      var appointmentTypes = await _repository.ListAsync();
-      response.AppointmentTypes = _mapper.Map<List<AppointmentTypeDto>>(appointmentTypes);
-      response.Count = response.AppointmentTypes.Count;
+      var response = await useCase.HandleAsync(request, cancellationToken);
 
       return Ok(response);
     }

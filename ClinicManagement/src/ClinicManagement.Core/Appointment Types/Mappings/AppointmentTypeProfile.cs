@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BlazorShared.Models.AppointmentType;
-using ClinicManagement.Core.Appointments;
+using ClinicManagement.Core.Appointment_Types.Domain;
+using ClinicManagement.Core.Appointment_Types.DTOs;
 
 namespace ClinicManagement.Api.MappingProfiles
 {

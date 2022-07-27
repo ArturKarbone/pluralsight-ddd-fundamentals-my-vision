@@ -7,6 +7,7 @@ using clients = ClinicManagement.Core.Clients.Use_Cases;
 using patients = ClinicManagement.Core.Patients.Use_Cases;
 using rooms = ClinicManagement.Core.Rooms.Use_Cases;
 using doctors = ClinicManagement.Core.Doctors.Use_Cases;
+using appointmentTypes = ClinicManagement.Core.Appointment_Types.Use_Cases;
 using ClinicManagement.Core.Interfaces;
 using ClinicManagement.Infrastructure;
 using ClinicManagement.Infrastructure.Data;
@@ -140,6 +141,8 @@ namespace ClinicManagement.Api
       services.AddScoped<doctors.GetById.IGetById, doctors.GetById.GetById>();
       services.AddScoped<doctors.List.IList, doctors.List.List>();
       services.AddScoped<doctors.Update.IUpdate, doctors.Update.Update>();
+
+      services.AddScoped<appointmentTypes.List.IList, appointmentTypes.List.List>();
     }
 
     public void ConfigureContainer(ContainerBuilder builder)

@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ardalis.HttpClientTestExtensions;
-using BlazorShared.Models.AppointmentType;
 using ClinicManagement.Api;
+using ClinicManagement.Core.Appointment_Types.Use_Cases.List;
 using Xunit;
 using Xunit.Abstractions;
 
