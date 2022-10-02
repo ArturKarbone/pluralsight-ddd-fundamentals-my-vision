@@ -12,7 +12,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     .WithResponse<ListRoomResponse>
   {
     private readonly IList useCase;
- 
+
     public List(IList useCase) =>
       this.useCase = useCase;
 
@@ -26,7 +26,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<ListRoomResponse>> HandleAsync([FromQuery] ListRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = useCase.HandleAsync(request, cancellationToken);
+      var response = await useCase.HandleAsync(request, cancellationToken);
 
       return response switch
       {

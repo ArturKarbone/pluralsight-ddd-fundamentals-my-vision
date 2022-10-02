@@ -13,6 +13,11 @@ namespace ClinicManagement.Core.Rooms.Domain
       Name = name;
     }
 
+    public Room()
+    {
+
+
+    }
     public override string ToString()
     {
       return Name;
