@@ -26,7 +26,7 @@ namespace ClinicManagement.Api.RoomEndpoints
     ]
     public override async Task<ActionResult<UpdateRoomResponse>> HandleAsync(UpdateRoomRequest request, CancellationToken cancellationToken)
     {
-      var response = useCase.HandleAsync(request, cancellationToken);
+      var response = await useCase.HandleAsync(request, cancellationToken);
 
       return Ok(response);
     }
